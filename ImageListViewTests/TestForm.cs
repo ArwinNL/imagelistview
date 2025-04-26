@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
-using System.ServiceModel.Syndication;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
+using System.ServiceModel.Syndication;
 
 namespace ImageListViewTests
 {
