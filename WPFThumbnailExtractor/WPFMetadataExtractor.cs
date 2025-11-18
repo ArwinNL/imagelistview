@@ -205,9 +205,17 @@ namespace Manina.Windows.Forms
         {
             foreach (string q in query)
             {
-                object val = metadata.GetQuery(q);
-                if (val != null)
-                    return val;
+                try
+                {
+                    // Try to get the metadata value.
+                    object val = metadata.GetQuery(q);
+                    if (val != null)
+                        return val;
+                }
+                catch (System.Runtime.InteropServices.COMException)
+                {
+                    // Ignore COM exceptions and continue.
+                }
             }
             return null;
         }
