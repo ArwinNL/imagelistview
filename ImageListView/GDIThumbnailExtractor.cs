@@ -18,10 +18,10 @@
 // WIC support coded by Jens
 
 using System;
-using System.IO;
-using System.Drawing.Imaging;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Text;
 
 namespace Manina.Windows.Forms
@@ -195,7 +195,12 @@ namespace Manina.Windows.Forms
                     using (FileStream stream = new FileStream(filename, FileMode.Open, FileAccess.Read))
                     {
                         byte[] gifSignature = new byte[4];
-                        stream.Read(gifSignature, 0, 4);
+                        //stream.Read(gifSignature, 0, 4);
+                        using (BinaryReader reader = new(stream, Encoding.ASCII, true))
+                        {
+                            reader.Read(gifSignature, 0, 4);
+                        }
+                        //System.IO.FileStream.Read(gifSignature,0,4);
                         if (Encoding.ASCII.GetString(gifSignature) == "GIF8")
                         {
                             stream.Seek(0, SeekOrigin.Begin);

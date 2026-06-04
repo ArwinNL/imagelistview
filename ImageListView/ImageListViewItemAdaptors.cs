@@ -18,7 +18,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Net;
+using System.Net.Http;
 using System.Text;
 
 namespace Manina.Windows.Forms.ImageListViewItemAdaptors
@@ -181,9 +181,10 @@ namespace Manina.Windows.Forms.ImageListViewItemAdaptors
             string uri = (string)key;
             try
             {
-                using (WebClient client = new WebClient())
+                using (HttpClient client = new HttpClient())
                 {
-                    byte[] imageData = client.DownloadData(uri);
+                    //byte[] imageData = client.DownloadData(uri);
+                    byte[] imageData = client.GetByteArrayAsync(uri).GetAwaiter().GetResult();
                     using (MemoryStream stream = new MemoryStream(imageData))
                     {
                         using (Image sourceImage = Image.FromStream(stream))
@@ -230,21 +231,25 @@ namespace Manina.Windows.Forms.ImageListViewItemAdaptors
         public override string GetSourceImage(object key)
         {
             if (disposed)
-                return null;
+                return null!;
 
             string uri = (string)key;
             try
             {
                 string filename = Path.GetTempFileName();
-                using (WebClient client = new WebClient())
+                using (HttpClient client = new HttpClient())
                 {
-                    client.DownloadFile(uri, filename);
+                    //client.GetFileAsync(uri, filename).Wait();
+                    byte[] data = client.GetByteArrayAsync(uri).GetAwaiter().GetResult();
+
+                    File.WriteAllBytes(filename, data);
+
                     return filename;
                 }
             }
             catch
             {
-                return null;
+                return null!;
             }
         }
         /// <summary>

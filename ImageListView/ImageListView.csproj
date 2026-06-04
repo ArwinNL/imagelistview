@@ -34,7 +34,10 @@
   </PropertyGroup>
   <PropertyGroup>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-  </PropertyGroup>  
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Update="IGrouper.cs">
       <SubType>Component</SubType>
